@@ -18,7 +18,7 @@
 
         .gold-border {
             border: 1px solid #d4af37;
-            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.12);
         }
 
         .gold-text {
@@ -45,25 +45,25 @@
 </head>
 <body class="flex flex-col items-center justify-center p-4 relative overflow-x-hidden">
 
-    <!-- CONTAINER -->
+    <!-- MAIN APP CONTAINER -->
     <main class="w-full max-w-md relative z-10 my-6">
 
         <!-- STAGE 1: ENVELOPE -->
         <section id="stageEnvelope" class="creamy-card gold-border rounded-3xl p-6 text-center space-y-6">
             <div class="inline-block bg-amber-50 text-amber-800 border border-amber-300 p-2 rounded-full font-bold text-xs">
-                ✨ هدية خاصة
+                ✨ هدية خاصة جداً
             </div>
             <div class="relative w-24 h-24 mx-auto my-4 cursor-pointer" onclick="goToStage('stagePasscode')">
                 <div class="w-full h-full bg-stone-100 rounded-full flex items-center justify-center border border-amber-400 shadow-md">
-                    <i class="fas fa-envelope text-4xl gold-text animate-pulse"></i>
+                    <i class="fas fa-envelope text-4xl gold-text animate-bounce"></i>
                 </div>
             </div>
             <div>
                 <p class="text-xs gold-text font-bold uppercase tracking-widest">A Letter For You</p>
-                <h1 class="text-3xl font-bold font-serif-custom text-black mt-1">إلى من أحب</h1>
+                <h1 class="text-3xl font-bold font-serif-custom text-black mt-1">إلى أغلى إنسان</h1>
             </div>
             <p class="text-stone-700 text-sm bg-stone-50 p-4 rounded-xl border border-stone-200">
-                رسالة خاصة وحظات مميزة جمعتها لك هنا... ✨
+                رسالة خاصة وحظات مميزة جمعتها لك هنا... اضغط بالأسفل للفتح ✨
             </p>
             <button onclick="goToStage('stagePasscode')" class="w-full gold-button font-bold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 flex items-center justify-center gap-2">
                 فتح الهدية <i class="fas fa-key"></i>
@@ -75,26 +75,27 @@
             <div class="w-16 h-16 bg-stone-100 text-amber-700 border border-amber-300 rounded-full flex items-center justify-center mx-auto text-2xl">
                 <i class="fas fa-lock"></i>
             </div>
-            <h2 class="text-xl font-bold text-black font-serif-custom">أدخل كلمة السر</h2>
+            <h2 class="text-xl font-bold text-black font-serif-custom">أدخل كلمة السر الخاصة</h2>
+            <p class="text-xs text-stone-500">أدخل كلمة السر للدخول للهدية والذكريات</p>
             <input type="password" id="inputPasscode" placeholder="****" class="w-full text-center px-4 py-3 rounded-xl border border-stone-300 bg-white focus:outline-none focus:border-amber-500">
-            <button onclick="verifyPasscode()" class="w-full gold-button font-bold py-3 rounded-xl shadow transition">
-                دخول
+            <button onclick="goToStage('stageMain')" class="w-full gold-button font-bold py-3 rounded-xl shadow transition">
+                تأكيد الدخول
             </button>
         </section>
 
         <!-- STAGE 3: MAIN CONTENT -->
         <section id="stageMain" class="hidden space-y-6">
             
-            <!-- HEADER -->
+            <!-- HEADER & UPLOAD CONTROL -->
             <div class="creamy-card gold-border rounded-3xl p-6 text-center space-y-4">
                 <h1 class="text-2xl font-bold font-serif-custom text-black">أهلاً بك في مكاننا الخاص ✨</h1>
                 
                 <!-- UPLOAD SECTION -->
                 <div class="bg-white p-4 rounded-2xl border border-stone-200 text-right space-y-3">
-                    <p class="text-xs font-bold gold-text"><i class="fas fa-plus-circle ml-1"></i> أضف ذكرياتك مباشرة من الجهاز:</p>
+                    <p class="text-xs font-bold gold-text"><i class="fas fa-plus-circle ml-1"></i> أضف ذكرياتك المباشرة من جهازك:</p>
                     
                     <div>
-                        <label class="block text-[11px] text-stone-600 mb-1">اختر صورة أو صور الميموريز:</label>
+                        <label class="block text-[11px] text-stone-600 mb-1">اختر الـ 5 صور الخاصة بك:</label>
                         <input type="file" id="uploadImages" accept="image/*" multiple class="text-xs text-stone-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-amber-100 file:text-amber-800">
                     </div>
 
@@ -110,20 +111,41 @@
                 </div>
             </div>
 
+            <!-- MESSAGES SECTION (جزء الرسائل) -->
+            <div class="creamy-card gold-border rounded-3xl p-6 space-y-3 text-right">
+                <h3 class="font-bold text-black text-sm font-serif-custom border-b border-amber-200 pb-2">
+                    <i class="fas fa-envelope-open-text gold-text ml-1"></i> رسالة خاصة لك:
+                </h3>
+                <p class="text-xs text-stone-700 leading-relaxed font-serif-custom">
+                    وجودك في حياتي بيضيف ليها طعم تاني خالص.. الأيام واللحظات اللي بيننا هي أجمل ذكريات بعملها. كل صورة وكل كلمة هنا متصممة عشان تفكرك قد إيه أنت مميز وعزيز على قلبي. ❤️️✨
+                </p>
+            </div>
+
+            <!-- COUNTER SECTION (عداد الوقت) -->
+            <div class="creamy-card gold-border rounded-3xl p-6 text-center space-y-3">
+                <h3 class="font-bold text-black text-xs font-serif-custom"><i class="fas fa-clock gold-text ml-1"></i> الوقت المنقضي معاً ❤️</h3>
+                <div id="counterDisplay" class="grid grid-cols-4 gap-2 text-center">
+                    <div class="bg-amber-100 border border-amber-300 text-amber-900 p-2 rounded-xl"><span id="cDays" class="block font-bold text-base">0</span><span class="text-[10px]">يوم</span></div>
+                    <div class="bg-amber-100 border border-amber-300 text-amber-900 p-2 rounded-xl"><span id="cHours" class="block font-bold text-base">0</span><span class="text-[10px]">ساعة</span></div>
+                    <div class="bg-amber-100 border border-amber-300 text-amber-900 p-2 rounded-xl"><span id="cMins" class="block font-bold text-base">0</span><span class="text-[10px]">دقيقة</span></div>
+                    <div class="bg-amber-100 border border-amber-300 text-amber-900 p-2 rounded-xl"><span id="cSecs" class="block font-bold text-base">0</span><span class="text-[10px]">ثانية</span></div>
+                </div>
+            </div>
+
             <!-- MUSIC PLAYER -->
             <div id="musicContainer" class="hidden creamy-card gold-border rounded-2xl p-4 space-y-2">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 gold-button rounded-full flex items-center justify-center">
                         <i class="fas fa-music text-xs"></i>
                     </div>
-                    <p class="text-xs font-bold text-black">الموسيقى الشغالة 🎵</p>
+                    <p class="text-xs font-bold text-black">الموسيقى المفضلة 🎵</p>
                 </div>
                 <audio id="audioPlayer" controls class="w-full h-8"></audio>
             </div>
 
-            <!-- GALLERY -->
+            <!-- GALLERY (ألبوم الـ 5 صور) -->
             <div class="creamy-card gold-border rounded-3xl p-6 space-y-4">
-                <h3 class="font-bold text-black text-center text-sm font-serif-custom"><i class="fas fa-images gold-text ml-1"></i> ألبوم الصور</h3>
+                <h3 class="font-bold text-black text-center text-sm font-serif-custom"><i class="fas fa-images gold-text ml-1"></i> ألبوم الصور والذكريات</h3>
                 <div id="galleryContainer" class="grid grid-cols-2 gap-3">
                     <p class="text-xs text-stone-400 col-span-2 text-center py-4">قم برفع الصور من الأعلى لتظهر هنا...</p>
                 </div>
@@ -147,20 +169,32 @@
                 document.getElementById(id).classList.add('hidden');
             });
             document.getElementById(stageId).classList.remove('hidden');
+            if(stageId === 'stageMain') {
+                startCounter();
+            }
         }
 
-        function verifyPasscode() {
-            goToStage('stageMain');
+        // Live Timer Setup
+        function startCounter() {
+            const start = new Date('2023-01-01').getTime();
+            setInterval(() => {
+                const now = new Date().getTime();
+                const diff = now - start;
+                document.getElementById('cDays').innerText = Math.floor(diff / (1000 * 60 * 60 * 24));
+                document.getElementById('cHours').innerText = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                document.getElementById('cMins').innerText = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+                document.getElementById('cSecs').innerText = Math.floor((diff % (1000 * 60)) / 1000);
+            }, 1000);
         }
 
-        // Handle Image Uploads from Device
+        // Handle Image Uploads
         document.getElementById('uploadImages').addEventListener('change', function(e) {
             const container = document.getElementById('galleryContainer');
             container.innerHTML = '';
             const files = e.target.files;
 
             if (files.length > 0) {
-                Array.from(files).forEach(file => {
+                Array.from(files).slice(0, 5).forEach(file => {
                     const reader = new FileReader();
                     reader.onload = function(event) {
                         const img = document.createElement('img');
@@ -173,7 +207,7 @@
             }
         });
 
-        // Handle Audio Upload from Device
+        // Handle Audio Upload
         document.getElementById('uploadAudio').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -183,7 +217,7 @@
             }
         });
 
-        // Handle Video Upload from Device
+        // Handle Video Upload
         document.getElementById('uploadVideo').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
@@ -194,5 +228,5 @@
         });
     </script>
 </body>
-                                                                                                              </html>
-        
+    </html>
+                                                                               
