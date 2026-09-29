@@ -1,363 +1,198 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مكاننا الخاص 💕</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap');
-    
-    body {
-      font-family: 'Cairo', sans-serif;
-      background: linear-gradient(135deg, #fff0f3 0%, #ffe4e8 100%);
-      min-height: 100vh;
-    }
-
-    /* Floating Heart Animation */
-    .heart-bg {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      z-index: 0;
-      overflow: hidden;
-    }
-    
-    .floating-heart {
-      position: absolute;
-      color: rgba(244, 63, 94, 0.2);
-      animation: float 8s infinite ease-in-out;
-    }
-
-    @keyframes float {
-      0% { transform: translateY(100vh) scale(0) rotate(0deg); opacity: 0; }
-      50% { opacity: 0.8; }
-      100% { transform: translateY(-10vh) scale(1.2) rotate(360deg); opacity: 0; }
-    }
-
-    /* Envelope Animation */
-    .envelope-box {
-      perspective: 1000px;
-    }
-    
-    .envelope {
-      transition: transform 0.6s ease;
-      transform-style: preserve-3d;
-    }
-
-    .pulse-btn {
-      animation: pulse 2s infinite;
-    }
-
-    @keyframes pulse {
-      0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0.4); }
-      70% { transform: scale(1.03); box-shadow: 0 0 0 15px rgba(244, 63, 94, 0); }
-      100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(244, 63, 94, 0); }
-    }
-  </style>
-</head>
-<body class="relative flex flex-col items-center justify-center p-4 min-h-screen text-slate-800">
-
-  <!-- Floating Hearts Background -->
-  <div class="heart-bg" id="heartBg"></div>
-
-  <!-- MAIN CONTAINER -->
-  <div class="w-full max-w-md relative z-10 my-6">
-
-    <!-- TOP NAVIGATION / ADMIN SWITCH -->
-    <div class="flex justify-between items-center mb-4 px-2">
-      <span class="text-xs text-rose-500 font-semibold bg-white/70 px-3 py-1 rounded-full shadow-sm backdrop-blur-sm">
-        <i class="fa-solid fa-sparkles"></i> هدية خاصة
-      </span>
-      <button onclick="toggleAdminModal()" class="text-xs bg-rose-600 hover:bg-rose-700 text-white font-bold px-3 py-1 rounded-full shadow transition flex items-center gap-1">
-        <i class="fa-solid fa-gear"></i> لوحة تحكم الإدارة
-      </button>
-    </div>
-
-    <!-- STEP 1: ENVELOPE COVER -->
-    <div id="stepEnvelope" class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-rose-100 text-center flex flex-col items-center">
-      <div class="w-24 h-24 bg-rose-100 rounded-full flex items-center justify-center mb-4 text-rose-500 text-4xl shadow-inner animate-bounce">
-        <i class="fa-solid fa-envelope-open-text"></i>
-      </div>
-      <p class="text-xs text-rose-400 font-bold tracking-widest uppercase mb-1">A letter for</p>
-      <h1 id="envRecipient" class="text-2xl font-bold text-rose-600 mb-4">Shahd 💕</h1>
-      
-      <div class="bg-rose-50 p-4 rounded-2xl w-full border border-rose-100 mb-6 text-rose-700 text-sm">
-        <p><i class="fa-solid fa-heart text-rose-500 ml-1"></i> مش عارف رد فعلك هيبقي إيه... بس عملتلك حاجة مخصوص عشانك ✨</p>
-      </div>
-
-      <button onclick="goToStep(2)" class="w-full py-3.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-rose-200 transition pulse-btn flex items-center justify-center gap-2">
-        <span>الدخول للموقع</span>
-        <i class="fa-solid fa-arrow-left"></i>
-      </button>
-    </div>
-
-    <!-- STEP 2: PASSWORD LOCK -->
-    <div id="stepPassword" class="hidden bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-rose-100 text-center flex flex-col items-center">
-      <div class="w-20 h-20 bg-rose-50 rounded-full flex items-center justify-center mb-4 text-rose-500 text-3xl shadow-inner">
-        <i class="fa-solid fa-lock"></i>
-      </div>
-      <h2 class="text-xs font-bold text-rose-400 tracking-widest mb-1">ENTER THE SECRET WORD</h2>
-      <h3 class="text-lg font-bold text-slate-700 mb-4">اكتبي كلمة السر الخاصة بنا ✨</h3>
-
-      <div class="w-full mb-4">
-        <input type="password" id="passInput" placeholder="اكتبي كلمة السر هنا..." class="w-full text-center py-3 px-4 rounded-2xl border-2 border-rose-200 focus:border-rose-500 focus:outline-none transition text-lg bg-rose-50/30">
-        <p id="errorMsg" class="text-red-500 text-xs mt-2 hidden"><i class="fa-solid fa-circle-exclamation"></i> كلمة السر غير صحيحة، حاولي مرة أخرى!</p>
-      </div>
-
-      <button onclick="verifyPassword()" class="w-full py-3.5 bg-rose-500 hover:bg-rose-600 text-white font-bold rounded-2xl shadow-lg shadow-rose-200 transition flex items-center justify-center gap-2">
-        <span>افتحي الهدية 🎁</span>
-      </button>
-    </div>
-
-    <!-- STEP 3: MAIN INTERACTIVE CONTENT -->
-    <div id="stepMain" class="hidden space-y-4">
-      
-      <!-- CARD 1: NAMES & COUNTDOWN -->
-      <div class="bg-white/90 backdrop-blur-md rounded-3xl p-6 shadow-xl border border-rose-100 text-center relative overflow-hidden">
-        <p class="text-xs text-rose-400 font-bold">Our place</p>
-        <h2 id="coupleNames" class="text-2xl font-black text-rose-600 my-1">Ali ❤️ Shahd</h2>
-        <p class="text-xs text-slate-500 mb-4">المكان بتاعنا إحنا الاثنين بس 💖</p>
-
-        <!-- Countdown Timer -->
-        <div class="bg-rose-50 rounded-2xl p-4 border border-rose-100 mb-2">
-          <p class="text-xs text-rose-500 font-bold mb-3"><i class="fa-solid fa-heart"></i> بدايتنا حكايتنا</p>
-          <div class="grid grid-cols-4 gap-2 text-center">
-            <div class="bg-white p-2 rounded-xl shadow-sm border border-rose-100">
-              <span id="cntDays" class="block text-xl font-black text-rose-600">0</span>
-              <span class="text-[10px] text-slate-400">يوم</span>
-            </div>
-            <div class="bg-white p-2 rounded-xl shadow-sm border border-rose-100">
-              <span id="cntHours" class="block text-xl font-black text-rose-600">0</span>
-              <span class="text-[10px] text-slate-400">ساعة</span>
-            </div>
-            <div class="bg-white p-2 rounded-xl shadow-sm border border-rose-100">
-              <span id="cntMinutes" class="block text-xl font-black text-rose-600">0</span>
-              <span class="text-[10px] text-slate-400">دقيقة</span>
-            </div>
-            <div class="bg-white p-2 rounded-xl shadow-sm border border-rose-100">
-              <span id="cntSeconds" class="block text-xl font-black text-rose-600">0</span>
-              <span class="text-[10px] text-slate-400">ثانية</span>
-            </div>
-          </div>
-          <p class="text-[11px] text-rose-400 mt-3 font-semibold">كل يوم بيعدي وهفضل أحبك أكثر 💕</p>
-        </div>
-      </div>
-
-      <!-- CARD 2: CHAT MESSAGES -->
-      <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 shadow-xl border border-rose-100 space-y-3">
-        <h3 class="text-xs font-bold text-rose-400 text-center"><i class="fa-solid fa-comments"></i> رسائل من القلب</h3>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مكاننا الخاص ✨</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;700&display=swap');
         
-        <div class="space-y-2">
-          <div class="bg-rose-50 p-3 rounded-2xl rounded-tr-none text-rose-800 text-xs shadow-sm max-w-[85%] border border-rose-100">
-            <p id="msgText1">كل لحظة معاكي بتفرق معايا، أيا كان الوقت عمري ما هبطل أحبك ❤️❤️</p>
-          </div>
-          <div class="bg-rose-500 p-3 rounded-2xl rounded-tl-none text-white text-xs shadow-sm max-w-[85%] mr-auto text-left">
-            <p id="msgText2">أنا بحبك أكتر بكتير 🥰🥰</p>
-          </div>
-        </div>
-      </div>
+        body { 
+            font-family: 'Cairo', sans-serif; 
+            background: #fdfbf7; 
+            color: #1a1a1a;
+            min-height: 100vh; 
+        }
 
-      <!-- CARD 3: MEMORIES & PHOTO GALLERY -->
-      <div class="bg-white/90 backdrop-blur-md rounded-3xl p-5 shadow-xl border border-rose-100 text-center">
-        <h3 class="text-xs font-bold text-rose-400 mb-3"><i class="fa-solid fa-images"></i> ذكرياتنا المقربة (memories)</h3>
-        <div class="relative rounded-2xl overflow-hidden shadow-md border-2 border-white aspect-video bg-rose-100 flex items-center justify-center">
-          <img id="photoMemory" src="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" alt="Memory" class="w-full h-full object-cover">
-          <div class="absolute bottom-0 inset-x-0 bg-gradient-to-t from-black/70 to-transparent p-3 text-white text-xs text-right">
-            <p id="photoCaption">عايز اقولك إن دا أحسن قرار أخدته في حياتي ❤️</p>
-          </div>
-        </div>
-      </div>
+        .gold-border {
+            border: 1px solid #d4af37;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.15);
+        }
 
-      <!-- CARD 4: MUSIC PLAYER -->
-      <div class="bg-white/90 backdrop-blur-md rounded-3xl p-4 shadow-xl border border-rose-100 flex items-center justify-between">
-        <div class="flex items-center gap-3">
-          <div class="w-10 h-10 bg-rose-500 text-white rounded-full flex items-center justify-center text-lg animate-spin" style="animation-duration: 4s;">
-            <i class="fa-solid fa-compact-disc"></i>
-          </div>
-          <div class="text-right">
-            <p class="text-xs text-rose-400 font-bold">أغنيتنا المفضلة 🎵</p>
-            <p class="text-xs font-bold text-slate-700">أغنيتنا الحبيبة</p>
-          </div>
-        </div>
-        <button onclick="toggleAudio()" id="playBtn" class="w-10 h-10 bg-rose-100 hover:bg-rose-200 text-rose-600 rounded-full flex items-center justify-center transition">
-          <i class="fa-solid fa-play"></i>
-        </button>
-      </div>
+        .gold-text {
+            color: #b8860b;
+        }
 
-    </div>
-  </div>
+        .gold-button {
+            background: linear-gradient(135deg, #d4af37 0%, #aa7c11 100%);
+            color: #ffffff;
+        }
 
-  <!-- ADMIN MODAL GENERATOR (FOR CREATING CLIENT LINKS IN SECONDS) -->
-  <div id="adminModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-    <div class="bg-white rounded-3xl p-6 w-full max-w-lg shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-      <div class="flex justify-between items-center border-b pb-3">
-        <h3 class="font-bold text-rose-600 text-lg"><i class="fa-solid fa-wand-magic-sparkles"></i> لوحة الإدارة: إنشاء رابط للعميل</h3>
-        <button onclick="toggleAdminModal()" class="text-slate-400 hover:text-slate-600 text-lg"><i class="fa-solid fa-xmark"></i></button>
-      </div>
+        .gold-button:hover {
+            background: linear-gradient(135deg, #c59b27 0%, #8e660d 100%);
+        }
 
-      <p class="text-xs text-slate-500">ادخل بيانات العميل هنا، وانسخ الرابط المجاني الجاهز بدون أي أكواد!</p>
+        .creamy-card {
+            background: #fcf9f2;
+        }
 
-      <div class="space-y-3 text-xs text-slate-700">
-        <div>
-          <label class="font-bold block mb-1">اسم الزوج / الزوجة (أو العميل):</label>
-          <input type="text" id="admNames" value="علي ❤️ شهد" class="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-rose-500">
-        </div>
-        <div>
-          <label class="font-bold block mb-1">كلمة السر المطلوبة للفتح:</label>
-          <input type="text" id="admPass" value="love" class="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-rose-500">
-        </div>
-        <div>
-          <label class="font-bold block mb-1">تاريخ بداية العلاقة (للعداد):</label>
-          <input type="date" id="admDate" value="2024-01-01" class="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-rose-500">
-        </div>
-        <div>
-          <label class="font-bold block mb-1">الرسالة الأولى:</label>
-          <input type="text" id="admMsg1" value="كل لحظة معاكي بتفرق معايا، هفضل أحبك دايماً ❤️" class="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-rose-500">
-        </div>
-        <div>
-          <label class="font-bold block mb-1">رابط الصورة (Image URL):</label>
-          <input type="text" id="admPhoto" value="https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80" class="w-full p-2.5 rounded-xl border border-slate-200 focus:outline-rose-500">
-        </div>
-      </div>
+        .font-serif-custom {
+            font-family: 'Amiri', serif;
+        }
+    </style>
+</head>
+<body class="flex flex-col items-center justify-center p-4 relative overflow-x-hidden">
 
-      <button onclick="generateCustomLink()" class="w-full py-3 bg-rose-600 hover:bg-rose-700 text-white font-bold rounded-xl shadow transition">
-        توليد الرابط الخاص بالعميل 🚀
-      </button>
+    <!-- CONTAINER -->
+    <main class="w-full max-w-md relative z-10 my-6">
 
-      <div id="outputBox" class="hidden mt-3 p-3 bg-slate-50 rounded-xl border border-slate-200">
-        <label class="text-[11px] font-bold text-slate-500 block mb-1">الرابط الجاهز للعميل:</label>
-        <input type="text" id="finalUrl" readonly class="w-full p-2 text-xs bg-white border rounded-lg text-rose-600 font-mono mb-2">
-        <button onclick="copyGeneratedUrl()" class="w-full py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-slate-900 transition">
-          <i class="fa-solid fa-copy"></i> نسخ الرابط
-        </button>
-      </div>
-    </div>
-  </div>
+        <!-- STAGE 1: ENVELOPE -->
+        <section id="stageEnvelope" class="creamy-card gold-border rounded-3xl p-6 text-center space-y-6">
+            <div class="inline-block bg-amber-50 text-amber-800 border border-amber-300 p-2 rounded-full font-bold text-xs">
+                ✨ هدية خاصة
+            </div>
+            <div class="relative w-24 h-24 mx-auto my-4 cursor-pointer" onclick="goToStage('stagePasscode')">
+                <div class="w-full h-full bg-stone-100 rounded-full flex items-center justify-center border border-amber-400 shadow-md">
+                    <i class="fas fa-envelope text-4xl gold-text animate-pulse"></i>
+                </div>
+            </div>
+            <div>
+                <p class="text-xs gold-text font-bold uppercase tracking-widest">A Letter For You</p>
+                <h1 class="text-3xl font-bold font-serif-custom text-black mt-1">إلى من أحب</h1>
+            </div>
+            <p class="text-stone-700 text-sm bg-stone-50 p-4 rounded-xl border border-stone-200">
+                رسالة خاصة وحظات مميزة جمعتها لك هنا... ✨
+            </p>
+            <button onclick="goToStage('stagePasscode')" class="w-full gold-button font-bold py-3.5 px-6 rounded-2xl shadow-lg transition duration-200 flex items-center justify-center gap-2">
+                فتح الهدية <i class="fas fa-key"></i>
+            </button>
+        </section>
 
-  <audio id="bgAudio" loop src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3"></audio>
+        <!-- STAGE 2: PASSCODE -->
+        <section id="stagePasscode" class="hidden creamy-card gold-border rounded-3xl p-6 text-center space-y-6">
+            <div class="w-16 h-16 bg-stone-100 text-amber-700 border border-amber-300 rounded-full flex items-center justify-center mx-auto text-2xl">
+                <i class="fas fa-lock"></i>
+            </div>
+            <h2 class="text-xl font-bold text-black font-serif-custom">أدخل كلمة السر</h2>
+            <input type="password" id="inputPasscode" placeholder="****" class="w-full text-center px-4 py-3 rounded-xl border border-stone-300 bg-white focus:outline-none focus:border-amber-500">
+            <button onclick="verifyPasscode()" class="w-full gold-button font-bold py-3 rounded-xl shadow transition">
+                دخول
+            </button>
+        </section>
 
-  <script>
-    // Global parameters from URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const names = urlParams.get('names') || 'Ali ❤️ Shahd';
-    const password = urlParams.get('pass') || 'love';
-    const startDateStr = urlParams.get('date') || '2024-01-01';
-    const msg1 = urlParams.get('msg1') || 'كل لحظة معاكي بتفرق معايا، أيا كان الوقت عمري ما هبطل أحبك ❤️❤️';
-    const photo = urlParams.get('photo') || 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=600&q=80';
+        <!-- STAGE 3: MAIN CONTENT -->
+        <section id="stageMain" class="hidden space-y-6">
+            
+            <!-- HEADER -->
+            <div class="creamy-card gold-border rounded-3xl p-6 text-center space-y-4">
+                <h1 class="text-2xl font-bold font-serif-custom text-black">أهلاً بك في مكاننا الخاص ✨</h1>
+                
+                <!-- UPLOAD SECTION -->
+                <div class="bg-white p-4 rounded-2xl border border-stone-200 text-right space-y-3">
+                    <p class="text-xs font-bold gold-text"><i class="fas fa-plus-circle ml-1"></i> أضف ذكرياتك مباشرة من الجهاز:</p>
+                    
+                    <div>
+                        <label class="block text-[11px] text-stone-600 mb-1">اختر صورة أو صور الميموريز:</label>
+                        <input type="file" id="uploadImages" accept="image/*" multiple class="text-xs text-stone-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-amber-100 file:text-amber-800">
+                    </div>
 
-    // Populate Page Elements based on URL
-    document.getElementById('envRecipient').innerText = names.split('❤️')[1] || names;
-    document.getElementById('coupleNames').innerText = names;
-    document.getElementById('msgText1').innerText = msg1;
-    document.getElementById('photoMemory').src = photo;
+                    <div>
+                        <label class="block text-[11px] text-stone-600 mb-1">اختر الأغنية (Audio/MP3):</label>
+                        <input type="file" id="uploadAudio" accept="audio/*" class="text-xs text-stone-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-amber-100 file:text-amber-800">
+                    </div>
 
-    // Background Floating Hearts
-    const heartBg = document.getElementById('heartBg');
-    for (let i = 0; i < 20; i++) {
-      const heart = document.createElement('i');
-      heart.className = 'fa-solid fa-heart floating-heart';
-      heart.style.left = Math.random() * 100 + 'vw';
-      heart.style.animationDuration = (Math.random() * 5 + 5) + 's';
-      heart.style.animationDelay = Math.random() * 5 + 's';
-      heart.style.fontSize = (Math.random() * 20 + 10) + 'px';
-      heartBg.appendChild(heart);
-    }
+                    <div>
+                        <label class="block text-[11px] text-stone-600 mb-1">اختر فيديو خاص:</label>
+                        <input type="file" id="uploadVideo" accept="video/*" class="text-xs text-stone-500 file:mr-2 file:py-1 file:px-3 file:rounded-full file:border-0 file:text-xs file:bg-amber-100 file:text-amber-800">
+                    </div>
+                </div>
+            </div>
 
-    // Step Navigation
-    function goToStep(step) {
-      document.getElementById('stepEnvelope').classList.add('hidden');
-      document.getElementById('stepPassword').classList.add('hidden');
-      document.getElementById('stepMain').classList.add('hidden');
+            <!-- MUSIC PLAYER -->
+            <div id="musicContainer" class="hidden creamy-card gold-border rounded-2xl p-4 space-y-2">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 gold-button rounded-full flex items-center justify-center">
+                        <i class="fas fa-music text-xs"></i>
+                    </div>
+                    <p class="text-xs font-bold text-black">الموسيقى الشغالة 🎵</p>
+                </div>
+                <audio id="audioPlayer" controls class="w-full h-8"></audio>
+            </div>
 
-      if (step === 1) document.getElementById('stepEnvelope').classList.remove('hidden');
-      if (step === 2) document.getElementById('stepPassword').classList.remove('hidden');
-      if (step === 3) {
-        document.getElementById('stepMain').classList.remove('hidden');
-        startCountdown();
-      }
-    }
+            <!-- GALLERY -->
+            <div class="creamy-card gold-border rounded-3xl p-6 space-y-4">
+                <h3 class="font-bold text-black text-center text-sm font-serif-custom"><i class="fas fa-images gold-text ml-1"></i> ألبوم الصور</h3>
+                <div id="galleryContainer" class="grid grid-cols-2 gap-3">
+                    <p class="text-xs text-stone-400 col-span-2 text-center py-4">قم برفع الصور من الأعلى لتظهر هنا...</p>
+                </div>
+            </div>
 
-    // Verify Password
-    function verifyPassword() {
-      const input = document.getElementById('passInput').value;
-      if (input === password) {
-        goToStep(3);
-      } else {
-        document.getElementById('errorMsg').classList.remove('hidden');
-      }
-    }
+            <!-- VIDEO PLAYER -->
+            <div id="videoContainer" class="hidden creamy-card gold-border rounded-3xl p-6 space-y-3">
+                <h3 class="font-bold text-black text-center text-sm font-serif-custom"><i class="fas fa-video gold-text ml-1"></i> الفيديو الخاص</h3>
+                <div class="rounded-2xl overflow-hidden bg-black">
+                    <video id="videoPlayer" controls class="w-full h-auto"></video>
+                </div>
+            </div>
 
-    // Countdown Timer Logic
-    function startCountdown() {
-      const startDate = new Date(startDateStr);
-      
-      function update() {
-        const now = new Date();
-        const diff = Math.abs(now - startDate);
+        </section>
 
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const minutes = Math.floor((diff / 1000 / 60) % 60);
-        const seconds = Math.floor((diff / 1000) % 60);
+    </main>
 
-        document.getElementById('cntDays').innerText = days;
-        document.getElementById('cntHours').innerText = hours;
-        document.getElementById('cntMinutes').innerText = minutes;
-        document.getElementById('cntSeconds').innerText = seconds;
-      }
-      update();
-      setInterval(update, 1000);
-    }
+    <script>
+        function goToStage(stageId) {
+            ['stageEnvelope', 'stagePasscode', 'stageMain'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+            document.getElementById(stageId).classList.remove('hidden');
+        }
 
-    // Audio Player Toggle
-    function toggleAudio() {
-      const audio = document.getElementById('bgAudio');
-      const btn = document.getElementById('playBtn');
-      if (audio.paused) {
-        audio.play();
-        btn.innerHTML = '<i class="fa-solid fa-pause"></i>';
-      } else {
-        audio.pause();
-        btn.innerHTML = '<i class="fa-solid fa-play"></i>';
-      }
-    }
+        function verifyPasscode() {
+            goToStage('stageMain');
+        }
 
-    // Admin Modal Logic
-    function toggleAdminModal() {
-      document.getElementById('adminModal').classList.toggle('hidden');
-    }
+        // Handle Image Uploads from Device
+        document.getElementById('uploadImages').addEventListener('change', function(e) {
+            const container = document.getElementById('galleryContainer');
+            container.innerHTML = '';
+            const files = e.target.files;
 
-    function generateCustomLink() {
-      const baseUrl = window.location.origin + window.location.pathname;
-      const admNames = encodeURIComponent(document.getElementById('admNames').value);
-      const admPass = encodeURIComponent(document.getElementById('admPass').value);
-      const admDate = encodeURIComponent(document.getElementById('admDate').value);
-      const admMsg1 = encodeURIComponent(document.getElementById('admMsg1').value);
-      const admPhoto = encodeURIComponent(document.getElementById('admPhoto').value);
+            if (files.length > 0) {
+                Array.from(files).forEach(file => {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const img = document.createElement('img');
+                        img.src = event.target.result;
+                        img.className = 'w-full h-32 object-cover rounded-xl border border-amber-300 shadow-sm';
+                        container.appendChild(img);
+                    }
+                    reader.readAsDataURL(file);
+                });
+            }
+        });
 
-      const generatedUrl = `${baseUrl}?names=${admNames}&pass=${admPass}&date=${admDate}&msg1=${admMsg1}&photo=${admPhoto}`;
-      
-      document.getElementById('finalUrl').value = generatedUrl;
-      document.getElementById('outputBox').classList.remove('hidden');
-    }
+        // Handle Audio Upload from Device
+        document.getElementById('uploadAudio').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const audioPlayer = document.getElementById('audioPlayer');
+                audioPlayer.src = URL.createObjectURL(file);
+                document.getElementById('musicContainer').classList.remove('hidden');
+            }
+        });
 
-    function copyGeneratedUrl() {
-      const copyText = document.getElementById('finalUrl');
-      copyText.select();
-      document.execCommand('copy');
-      alert('تم نسخ الرابط المخصص للعميل بنجاح!');
-    }
-  </script>
+        // Handle Video Upload from Device
+        document.getElementById('uploadVideo').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const videoPlayer = document.getElementById('videoPlayer');
+                videoPlayer.src = URL.createObjectURL(file);
+                document.getElementById('videoContainer').classList.remove('hidden');
+            }
+        });
+    </script>
 </body>
-</html>
-```
-
-### ملخص العمل وكيفية الاستخدام:
-1. **تصميم تفاعلي كامل:** الملف يضم جميع الواجهات الموضحة بالفيديو (المظروف، كلمة السر، العداد التنازلي، الرسائل النصية، ألبوم الصور، والموسيقى).
-2. **لوحة تحكم فورية:** بالضغط على زر **"لوحة تحكم الإدارة"** أعلى الشاشة، يمكنك إدخال بيانات أي عميل جديد وتوليد رابط خاص به فوراً دون تغيير أي كود برمجي.
-3. **مجاني 100%:** يمكنك استضافة هذا الملف مباشرة عبر منصة **Vercel** أو **GitHub Pages** ليعمل لسنوات طويلة دون أي رسوم.
+                                                                                                              </html>
+        
